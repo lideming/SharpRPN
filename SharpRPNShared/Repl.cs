@@ -19,7 +19,10 @@ namespace SharpRPN
                 //Console.Clear();
                 //Console.WriteLine(line);
                 Console.ResetColor();
-                if (line != "")
+                if (line == null)
+                    break;
+
+                if (line.Length > 0)
                     try {
                         trr = tr.Input(line);
                         var ast = AST.FromTokens(trr);
