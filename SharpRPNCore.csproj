@@ -5,6 +5,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <Import Project="..\SharpRPNShared\SharpRPNShared.projitems" Label="Shared" />
-
 </Project>
