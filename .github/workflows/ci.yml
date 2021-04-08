@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore 
+
+    - name: Publish (linux-x64)
+      run: dotnet publish -c Release -o release/linux-x64 -r linux-x64 --no-self-contained
+    - name: Publish (win-x86)
+      run: dotnet publish -c Release -o release/win-x86 -r win-x86 --no-self-contained
+
+    - name: Archive linux-x64 binary
+      uses: actions/upload-artifact@v2
+      with:
+        name: SharpRPN-linux-x64
+        path: release/linux-x64
+    - name: Archive win-x86 binary
+      uses: actions/upload-artifact@v2
+      with:
+        name: SharpRPN-win-x86
+        path: release/win-x86
