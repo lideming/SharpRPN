@@ -38,12 +38,11 @@ namespace SharpRPN
             for (int i = 0; i < len; i++) {
                 var node = cb.codes[i];
                 try {
-                    if (node is Name) {
-                        handleName((node as Name).name, scope);
-                    } else if (node is Value) {
-                        scope.Push(((Value)node).value);
-                    } else if (node is Ifthen) {
-                        var ift = node as Ifthen;
+                    if (node is Name name) {
+                        handleName(name.name, scope);
+                    } else if (node is Value val) {
+                        scope.Push(val.value);
+                    } else if (node is Ifthen ift) {
                         if ((bool)scope.Pop() == true) {
                             _runCodeBlock(ift.ifTrue, scope);
                         } else {
@@ -51,8 +50,8 @@ namespace SharpRPN
                                 _runCodeBlock(ift.@else, scope);
                             }
                         }
-                    } else if (node is CodeBlock) {
-                        scope.Push(node);
+                    } else if (node is CodeBlock codeblk) {
+                        scope.Push(codeblk);
                     }
                 } catch (Exception e) {
                     throw getException($"exception", node.token, str, e);
@@ -77,10 +76,10 @@ namespace SharpRPN
             } else {
                 var v = scope.GetVar(name);
                 if (v != null) {
-                    if (v is Function) {
-                        invokeFunction(name, v as Function, scope);
-                    } else if (v is CodeBlock) {
-                        _runCodeBlock(v as CodeBlock, scope);
+                    if (v is Function func) {
+                        invokeFunction(name, func, scope);
+                    } else if (v is CodeBlock codeblk) {
+                        _runCodeBlock(codeblk, scope);
                     } else {
                         scope.Push(v);
                     }

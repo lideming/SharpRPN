@@ -20,15 +20,9 @@ namespace SharpRPN
             throw new TooFewArguments();
         }
 
-        public static void ThrowArgsError()
-        {
-            throw new FunctionException("args error.");
-        }
+        public static void ThrowArgsError() => throw new FunctionException("args error.");
 
-        public static void ThrowArgsTypeError()
-        {
-            throw new FunctionException("wrong args type.");
-        }
+        public static void ThrowArgsTypeError() => throw ArgsTypeError();
 
         public static FunctionException ArgsTypeError() => new FunctionException("wrong args type.");
 
@@ -159,19 +153,19 @@ namespace SharpRPN
                 var v = s.Pop();
                 var value = s.Pop();
                 if (value == null) ThrowArgsError();
-                if (v is Var)
-                    s.SetVar(((Var)v).name, value);
-                else if (v is string)
-                    s.SetVar(v as string, value);
+                if (v is Var va)
+                    s.SetVar(va.name, value);
+                else if (v is string str)
+                    s.SetVar(str, value);
                 else
                     ThrowArgsTypeError();
             });
             scope.AddFunction("purge", (s) => {
                 s.CheckArgsCount(1);
                 var v = s.Pop();
-                if (v is Var)
-                    s.Vars.Remove(((Var)v).name);
-                else if (v is string)
+                if (v is Var va)
+                    s.Vars.Remove(va.name);
+                else if (v is string str)
                     s.Vars.Remove((string)v);
                 else
                     ThrowArgsTypeError();
@@ -179,28 +173,24 @@ namespace SharpRPN
             scope.AddFunction("rcl", (s) => {
                 s.CheckArgsCount(1);
                 var arg = s.Pop();
-                var varName = arg as string;
-                if (varName == null) {
-                    varName = (arg as Var)?.name;
-                    if (varName == null) ThrowArgsTypeError();
-                }
+                var varName = arg as string ?? (arg as Var)?.name ?? throw ArgsTypeError();
                 var value = s.GetVar(varName);
                 if (value == null) throw new FunctionException("undefinded name.");
                 s.Push(value);
             });
             scope.AddFunctionO("len", (arr) => {
-                if (arr is ICollection)
-                    return (arr as ICollection).Count;
-                else if (arr is string)
-                    return (arr as string).Length;
+                if (arr is ICollection col)
+                    return col.Count;
+                else if (arr is string str)
+                    return str.Length;
                 else
                     throw ArgsTypeError();
             });
             scope.AddFunctionO("get", (arr, index) => {
-                if (arr is IList && index is int)
-                    return (arr as IList)[(int)index];
-                else if (arr is string && index is int)
-                    return (arr as string)[(int)index];
+                if (arr is IList list && index is int idx)
+                    return list[idx];
+                else if (arr is string str && index is int idx2)
+                    return str[idx2];
                 else
                     throw ArgsTypeError();
             });
@@ -217,12 +207,12 @@ namespace SharpRPN
         {
             s.CheckArgsCount(1);
             var arg = s.Pop();
-            if (arg is string) {
-                s.Input(arg as string);
-            } else if (arg is Function) {
-                (arg as Function)(s);
-            } else if (arg is AST.CodeBlock) {
-                s.Input((arg as AST.CodeBlock));
+            if (arg is string str) {
+                s.Input(str);
+            } else if (arg is Function func) {
+                func(s);
+            } else if (arg is AST.CodeBlock cb) {
+                s.Input(cb);
             } else {
                 ThrowArgsTypeError();
             }
