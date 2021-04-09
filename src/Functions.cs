@@ -130,13 +130,12 @@ namespace SharpRPN
             scope.AddFunction("evalifelse", (s) => {
                 s.CheckArgsCount(3);
                 var condition = s.Pop();
-                var str2 = s.Pop() as string;
-                var str = s.Pop() as string;
+                var str2 = s.Pop();
+                var str = s.Pop();
                 if (str == null || str2 == null) ThrowArgsTypeError();
-                if (condition.Equals(true) || condition.Equals(1))
-                    s.Input(str);
-                else
-                    s.Input(str2);
+                var truthy = condition.Equals(true) || condition.Equals(1);
+                s.Push(truthy ? str : str2);
+                eval(s);
             });
             scope.AddFunction("ifte", (s) => {
                 s.CheckArgsCount(3);
