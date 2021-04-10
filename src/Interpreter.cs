@@ -74,8 +74,7 @@ namespace SharpRPN
             if (name.StartsWith("'") && name.EndsWith("'")) {
                 scope.Push(new Var(name.Trim('\'')));
             } else {
-                var v = scope.GetVar(name);
-                if (v != null) {
+                if (scope.TryGetVar(name, out var v)) {
                     if (v is Function func) {
                         invokeFunction(name, func, scope);
                     } else if (v is CodeBlock codeblk) {

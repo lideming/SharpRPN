@@ -33,7 +33,7 @@ namespace SharpRPN
                         Console.ResetColor();
                     }
                 WriteStack(scope.Stack);
-                if (scope.Vars["_showtokens_"] as string == "1" && trr != null) {
+                if (scope.TryGetVar("_showtokens_", out var v) && v as string == "1" && trr != null) {
                     WriteTokens(trr.Tokens);
                 }
             }

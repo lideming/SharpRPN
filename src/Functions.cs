@@ -151,7 +151,6 @@ namespace SharpRPN
                 s.CheckArgsCount(2);
                 var v = s.Pop();
                 var value = s.Pop();
-                if (value == null) ThrowArgsError();
                 if (v is Var va)
                     s.SetVar(va.name, value);
                 else if (v is string str)
@@ -173,8 +172,7 @@ namespace SharpRPN
                 s.CheckArgsCount(1);
                 var arg = s.Pop();
                 var varName = arg as string ?? (arg as Var)?.name ?? throw ArgsTypeError();
-                var value = s.GetVar(varName);
-                if (value == null) throw new FunctionException("undefinded name.");
+                if (!s.TryGetVar(varName, out var value)) throw new FunctionException("undefinded name.");
                 s.Push(value);
             });
             scope.AddFunctionO("len", (arr) => {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace SharpRPN
 {
@@ -8,13 +9,14 @@ namespace SharpRPN
     {
         Stack _stack = new Stack();
         public Stack Stack => _stack;
-        Hashtable _vars = new Hashtable();
-        public Hashtable Vars => _vars;
+        Dictionary<string, object> _vars = new Dictionary<string, object>();
+        public Dictionary<string, object> Vars => _vars;
 
-        public virtual object GetVar(string name)
+        public virtual bool TryGetVar(string name, out object obj)
         {
-            return Vars[name];
+            return Vars.TryGetValue(name, out obj);
         }
+
         public virtual void SetVar(string name, object value)
         {
             Vars[name] = value;
