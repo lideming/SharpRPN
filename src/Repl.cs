@@ -55,9 +55,14 @@ namespace SharpRPN
 
         private static void WriteStack(Stack stack)
         {
+            if (stack.Count == 0) {
+                Console.WriteLine("Stack empty");
+                return;
+            }
             int i = 1;
-            Console.WriteLine("===StackBegin===");
+            Console.WriteLine("Stack {");
             foreach (var item in stack) {
+                Console.Write("  ");
                 Console.Write(i++);
                 Console.Write(":\t");
                 Console.Write(item);
@@ -66,7 +71,8 @@ namespace SharpRPN
                 Console.WriteLine(item?.GetType().Name ?? "(null)");
                 Console.ResetColor();
             }
-            Console.WriteLine("====StackEnd====");
+            Console.WriteLine("}");
+            Console.WriteLine();
         }
     }
 }
