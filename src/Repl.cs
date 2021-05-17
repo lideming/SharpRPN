@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Spectre.Console;
 
 namespace SharpRPN
 {
@@ -59,20 +60,19 @@ namespace SharpRPN
                 Console.WriteLine("Stack empty");
                 return;
             }
+
+            var table = new Table();
+            table.MinimalBorder();
+            table.AddColumns("#", "Value", "Type");
             int i = 1;
-            Console.WriteLine("Stack {");
             foreach (var item in stack) {
-                Console.Write("  ");
-                Console.Write(i++);
-                Console.Write(":\t");
-                Console.Write(item);
-                Console.Write("\t");
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine(item?.GetType().Name ?? "(null)");
-                Console.ResetColor();
+                table.AddRow(
+                    new Text((i++).ToString()),
+                    new Text(item?.ToString() ?? "(null)"),
+                    new Markup(Markup.Escape(item?.GetType().Name ?? "(null)"), new Style(Color.Blue))
+                );
             }
-            Console.WriteLine("}");
-            Console.WriteLine();
+            AnsiConsole.Render(table);
         }
     }
 }
