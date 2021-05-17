@@ -1,6 +1,7 @@
 # SharpRPN
 
-SharpRPN is a stack machine with an [RPN](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwilgOqriPHvAhVFK6YKHVbnCdMQFjAAegQIBxAD&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FReverse_Polish_notation&usg=AOvVaw2mN4WrOI1Sk0mYPBG9JB3U) programming language, inspired by [RPL](https://en.wikipedia.org/wiki/RPL_(programming_language)) on HP calculators.
+SharpRPN is a stack machine with an [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation) programming language,
+inspired by [RPL](https://en.wikipedia.org/wiki/RPL_(programming_language)) on HP calculators.
 
 ![SharpRPN image](https://user-images.githubusercontent.com/14901890/114175312-76962080-996c-11eb-9dd5-0a2e17d1b7dc.png)
 
