@@ -91,14 +91,14 @@ namespace SharpRPN
             });
             scope.AddFunctionO("gettypename", (a) => a.GetType().Name);
             scope.AddFunctionO("gettypefullname", (a) => a.GetType().FullName);
-            scope.AddFunction("drop", (a) => { a.CheckArgsCount(1); a.Stack.Pop(); });
-            scope.AddFunction("dup", (a) => { a.CheckArgsCount(1); a.Stack.Push(a.Stack.Peek()); });
+            scope.AddFunction("drop", (a) => { a.CheckArgsCount(1); a.Pop(); });
+            scope.AddFunction("dup", (a) => { a.CheckArgsCount(1); a.Push(a.Peek()); });
             scope.AddFunction("swap", (a) => {
                 a.CheckArgsCount(2);
-                var oa = a.Stack.Pop();
-                var ob = a.Stack.Pop();
-                a.Stack.Push(oa);
-                a.Stack.Push(ob);
+                var oa = a.Pop();
+                var ob = a.Pop();
+                a.Push(oa);
+                a.Push(ob);
             });
             scope.AddFunction("pick", (a) => {
                 var num = a.Pop<int>();
@@ -112,8 +112,8 @@ namespace SharpRPN
                 }
                 a.Push(temp[num - 1]);
             });
-            scope.AddFunction("depth", (a) => { a.Stack.Push(a.Stack.Count); });
-            scope.AddFunction("clear", (a) => { a.Stack.Clear(); });
+            scope.AddFunction("depth", (a) => { a.Push(a.Stack.Count); });
+            scope.AddFunction("clear", (a) => { a.Clear(); });
             scope.AddFunctionO("print", (a) => scope.write(a.ToString()));
             scope.AddFunctionO("println", (a) => scope.writeLine(a.ToString()));
             scope.AddFunction("input", () => scope.readLine());

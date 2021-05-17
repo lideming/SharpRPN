@@ -54,7 +54,7 @@ namespace SharpRPN
             Console.WriteLine("====TokenEnd====");
         }
 
-        private static void WriteStack(Stack stack)
+        private static void WriteStack(List<object> stack)
         {
             if (stack.Count == 0) {
                 Console.WriteLine("Stack empty");
@@ -64,10 +64,10 @@ namespace SharpRPN
             var table = new Table();
             table.MinimalBorder();
             table.AddColumns("#", "Value", "Type");
-            int i = 1;
-            foreach (var item in stack) {
+            for (int idx = 0; idx < stack.Count; idx++) {
+                object item = stack[idx];
                 table.AddRow(
-                    new Text((i++).ToString()),
+                    new Text((stack.Count - idx).ToString()),
                     new Text(item?.ToString() ?? "(null)"),
                     new Markup(Markup.Escape(item?.GetType().Name ?? "(null)"), new Style(Color.Blue))
                 );

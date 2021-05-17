@@ -7,8 +7,8 @@ namespace SharpRPN
 
     public class Scope
     {
-        Stack _stack = new Stack();
-        public Stack Stack => _stack;
+        List<object> _stack = new List<object>();
+        public List<object> Stack => _stack;
         Dictionary<string, object> _vars = new Dictionary<string, object>();
         public Dictionary<string, object> Vars => _vars;
 
@@ -131,26 +131,42 @@ namespace SharpRPN
 
         public void Push(object obj)
         {
-            _stack.Push(obj);
+            _stack.Add(obj);
+        }
+
+        public object Peek()
+        {
+            var idx = _stack.Count - 1;
+            var obj = _stack[idx];
+            return obj;
         }
 
         public object Pop()
         {
-            return _stack.Pop();
+            var idx = _stack.Count - 1;
+            var obj = _stack[idx];
+            _stack.RemoveAt(idx);
+            return obj;
         }
 
         public T Pop<T>()
         {
+            var obj = Pop();
             try {
-                return (T)_stack.Pop();
+                return (T)obj;
             } catch (Exception) {
-                throw new FunctionException("wrong arg type, need " + typeof(T).Name);
+                throw new FunctionException("wrong arg type, need " + typeof(T).Name + ", got " + (obj?.GetType().Name ?? "(null)"));
             }
         }
 
         public double PopNum()
         {
-            return Functions.CastToNum(_stack.Pop());
+            return Functions.CastToNum(Pop());
+        }
+
+        public void Clear()
+        {
+            _stack.Clear();
         }
 
         public void CheckArgsCount(int count)
